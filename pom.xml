@@ -1,0 +1,175 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.example</groupId>
+	<artifactId>maven_basic_example</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
+		<java-version>22</java-version>
+		<maven.compiler.source>22</maven.compiler.source>
+		<maven.compiler.target>22</maven.compiler.target>
+	</properties>
+	
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter</artifactId>
+		    <version>5.11.0-RC1</version>
+		    <scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault> <!-- Habilitado por defecto -->
+			</activation>
+			
+			<properties>
+				<env>dev</env> <!-- Es un valor que le pasamos -->
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>prod</id>
+			
+			<properties>
+				<env>prod</env>	
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>test</id>
+			
+			<properties>
+				<env>test</env>	
+			</properties>
+		</profile>
+	</profiles>
+	
+	<build>
+		<filters>
+			<filter>src/main/resources/configs/config.${env}.properties</filter>
+		</filters>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<plugins> 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>maven_basic_example.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!--
+			https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>4.0.0-M16</version>
+			</plugin>
+			
+			<!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+			<plugin>
+			    <groupId>org.jacoco</groupId>
+			    <artifactId>jacoco-maven-plugin</artifactId>
+			    <version>0.8.12</version>
+			    <executions>
+			    	<execution>
+			    		<id>default-prepare-agent</id>
+			    		<goals>
+			    			<goal>prepare-agent</goal>
+			    		</goals>
+			    	</execution>
+			    	
+			    	<execution>
+			    		<id>default-report</id>
+			    		<goals>
+			    			<goal>report</goal>
+			    		</goals>
+			    	</execution>
+			    </executions>
+			</plugin>
+			
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<!--
+			https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-report-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>3.3.1</version>
+			</plugin>
+
+
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-project-info-reports-plugin</artifactId>
+			    <version>3.6.2</version>
+			</plugin>
+
+			<!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+			<plugin>
+			    <groupId>org.jacoco</groupId>
+			    <artifactId>jacoco-maven-plugin</artifactId>
+			    <version>0.8.12</version>
+			    <reportSets>
+			    	<reportSet>
+			    		<reports>
+			    			<report>report</report>
+			    		</reports>
+			    	</reportSet>
+			    </reportSets>
+			</plugin>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pmd-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.24.0</version>
+			</plugin>
+
+
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-checkstyle-plugin</artifactId>
+			    <version>3.4.0</version>
+			</plugin>
+
+
+			<!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
+			<plugin>
+			    <groupId>com.github.spotbugs</groupId>
+			    <artifactId>spotbugs-maven-plugin</artifactId>
+			    <version>4.8.6.2</version>
+			</plugin>
+			
+		</plugins>
+	</reporting>
+</project>
